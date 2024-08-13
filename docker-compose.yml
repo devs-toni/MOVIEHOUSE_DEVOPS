@@ -16,7 +16,7 @@ services:
     networks:
       - net
       
-  backend:
+  moviehouse_backend:
     container_name: moviehouse-service
     restart: unless-stopped
     image: devstoni/moviehouse:0.2.0
@@ -26,6 +26,10 @@ services:
       - net
     depends_on: 
       - database
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.moviehouse_backend.rule=Host(`movies.local`)"
+      - "traefik.http.services.moviehouse_backend.loadbalancer.server.port=$SERVER_HOST_PORT" 
 
 volumes:
   data:
